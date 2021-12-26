@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 	printf("SLD started!\n");
 	
 	// Create window
-	SDL_Window* fuckwindows = SDL_CreateWindow("Conway's game of life", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, 0); 
+	SDL_Window* fuckwindows = SDL_CreateWindow("TV noise", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, 0); 
 	if (!fuckwindows) {
 		printf("Error creating a window: %s\n", SDL_GetError());
 		SDL_Quit();
@@ -51,10 +51,10 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	printf("Renderer created!\n");
+	printf("\nPress space to start the simulation.\n");
 
 	// Main loop
 	int running = 0, space_pressed = 1; 
-	int color_r, color_g, color_b;
 
 	SDL_Rect current_rect;
 	SDL_Event fuckevents;	// Create an event for the keys and shit
@@ -147,5 +147,7 @@ int main(int argc, char* argv[]) {
 	SDL_DestroyRenderer(fuckrenderers);
 	SDL_DestroyWindow(fuckwindows);
 	SDL_Quit();
+
+	return 0;
 }
 
