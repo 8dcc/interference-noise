@@ -11,7 +11,7 @@
 #define FPS 60				// Will wait 1000ms/FPS between frames
 #define DELAY 50			// Will set this as delay instead of the fps if the value is not 0 and the space is pressed
 
-#define DEBUG_PRINT 1
+#define DEBUG_PRINT 1		// 1 is enabled
 
 int main(int argc, char* argv[]) {
 	int noise_grid_colors[WINDOW_H/NOISE_SIZE][WINDOW_W/NOISE_SIZE][3];
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 		SDL_Log("Unable to start: %s\n", SDL_GetError());
 		return 1;
 	}
-	printf("SLD started!\n");
+	if (DEBUG_PRINT) printf("SLD started!\n");
 	
 	// Create window
 	SDL_Window* fuckwindows = SDL_CreateWindow("TV noise (Grayscale)", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_W, WINDOW_H, 0); 
@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 		SDL_Quit();
 		return 1;
 	}
-	printf("Window created!\n");
+	if (DEBUG_PRINT) printf("Window created!\n");
 
 	// Create renderer
 	Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
@@ -50,8 +50,8 @@ int main(int argc, char* argv[]) {
 		SDL_Quit();
 		return 1;
 	}
-	printf("Renderer created!\n");
-	printf("\nPress space to start the simulation.\n");
+	if (DEBUG_PRINT) printf("Renderer created!\n\n");
+	printf("Press space to start the simulation.\n");
 
 	// Main loop
 	int running = 0, space_pressed = 1, random_number = 0; 
@@ -62,44 +62,21 @@ int main(int argc, char* argv[]) {
 		// Events
 		while (SDL_PollEvent(&fuckevents)) {
 			switch (fuckevents.type) {
-				// Window is closed?
-				case SDL_QUIT:
-					running = 1;
-					break;
-				case SDL_KEYDOWN:
-					// Check the pressed key
+				case SDL_QUIT:							running = 1;			break;
+				case SDL_KEYDOWN:						// Check the pressed key
 					switch (fuckevents.key.keysym.scancode) {
-						case SDL_SCANCODE_ESCAPE:
-							running = 1;
-							if (DEBUG_PRINT == 0) {
-								printf("Esc key pressed!\n");
-							}
-							break;
-						case SDL_SCANCODE_SPACE:
-							space_pressed = 0;
-							if (DEBUG_PRINT == 0) {
-								//printf("Space key pressed!\n");
-							}
-							break;
-						default:
-							break;
+						case SDL_SCANCODE_ESCAPE:		running = 1;			break;
+						case SDL_SCANCODE_SPACE:		space_pressed = 0;		break;
+						default:						break;
 					}
 					break;
-				case SDL_KEYUP:
-					// Check the released key
+				case SDL_KEYUP:							// Check the released key
 					switch (fuckevents.key.keysym.scancode) {
-						case SDL_SCANCODE_SPACE:
-							space_pressed = 1;
-							if (DEBUG_PRINT == 0) {
-								printf("Space key released!\n");
-							}
-							break;
-						default:
-							break;
+						case SDL_SCANCODE_SPACE:		space_pressed = 1;		break;
+						default:						break;
 					}
 					break;
-				default:
-					break;
+				default:								break;
 			}
 		}
 
@@ -136,11 +113,8 @@ int main(int argc, char* argv[]) {
 			
 		// Send to window
 		SDL_RenderPresent(fuckrenderers);
-		if (space_pressed == 0 && DELAY != 0) {
-			SDL_Delay(DELAY);
-		} else {
-			SDL_Delay(1000/FPS);
-		}
+		if (space_pressed == 0 && DELAY != 0) SDL_Delay(DELAY);
+		else SDL_Delay(1000/FPS);
 	}
 
 	// End of the program
